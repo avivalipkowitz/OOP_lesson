@@ -26,31 +26,9 @@ GAME_HEIGHT = 10
 #### Put class definitions here ####
 
 class Rock(GameElement):
-    IMAGE = princess
+    IMAGE = "Rock"
     SOLID = True
     RETURN = False
-
-class Character(GameElement):
-    IMAGE = None
-
-    print dir(GameElement)
-
-    def __init__(self, image):
-        GameElement.__init__(self)
-        self.inventory = []
-        self.IMAGE = image
-
-    def next_pos(self, direction):
-        if direction == "up":
-            return (self.x, self.y-1)
-        elif direction == "down":
-            return (self.x, self.y+1)
-        elif direction == "left":
-            return (self.x-1, self.y)
-        elif direction == "right":
-            return (self.x+1, self.y)
-        return None
-
 
 class Gem(GameElement):
     IMAGE = "BlueGem"
@@ -73,6 +51,49 @@ class Heart(GameElement):
 
         next_x = 2
         next_y = 2
+
+class Water(GameElement):
+    IMAGE = "Water"
+    SOLID = True
+    RETURN = False
+
+class Character(GameElement):
+    IMAGE = None
+    SOLID = True
+
+    print dir(GameElement)
+
+    def __init__(self, image):
+        GameElement.__init__(self)
+        self.inventory = []
+        self.IMAGE = image
+
+    def next_pos(self, direction):
+        if direction == "up":
+            return (self.x, self.y-1)
+        elif direction == "down":
+            return (self.x, self.y+1)
+        elif direction == "left":
+            return (self.x-1, self.y)
+        elif direction == "right":
+            return (self.x+1, self.y)
+        return None
+
+    def speak(self):
+        GAME_BOARD.draw_msg("I am a character!")
+
+class Princess(Character): ###FIX THIS SO THAT INIT DOESN'T REQUIRE AN IMAGE ARGUMENT###
+    IMAGE = princess
+
+class Yoshua(Character):
+    IMAGE = "Yoshua"
+
+class Happy(Character):
+    IMAGE = "Happy"
+
+class Oski(Character):
+    IMAGE = "Oski"
+
 
 ####   End class definitions    ####
 
@@ -136,14 +157,17 @@ def initialize():
 
     GAME_BOARD.draw_msg("%s is trapped in the Campanile. Defeat all the Berkeley characters to get the key to free %s!!!" % (princess, princess))
 
+    keyboard_handler()
+
     # Initialize player
     global PLAYER
     PLAYER = Character(username)
     GAME_BOARD.register(PLAYER)
-    GAME_BOARD.set_el(2, 2, PLAYER)
+    GAME_BOARD.set_el(0, 0, PLAYER)
     print PLAYER
 
-    keyboard_handler()
+    # Initialize princess
+    PRINCESS = Princess()
 
     # Initialize gem
     gem = Gem()
@@ -154,7 +178,6 @@ def initialize():
     heart = Heart()
     GAME_BOARD.register(heart)
     GAME_BOARD.set_el(0, 0, heart)
-
 
 
     # GAME_BOARD.erase_msg()

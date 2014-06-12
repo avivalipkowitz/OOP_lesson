@@ -42,8 +42,8 @@ def setup_images():
             "Girl": "Character Pink Girl.png",
             "Princess": "Character Princess Girl.png",
             "Campanile": "campanile.png",
-            "Happy": "happy.jpg",
-            "Yoshua": "yoshua.jpg",
+            "Happy": "happy.png",
+            "Yoshua": "yoshua.png",
             "Oski": "oski.png",
             "Aviva": "Aviva.png",
             "Katie": "katie.png"
