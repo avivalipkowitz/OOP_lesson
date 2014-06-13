@@ -32,32 +32,15 @@ class Rock(GameElement):
     SOLID = True
     RETURN = False
 
+class TallTree(GameElement):
+    IMAGE = "TallTree"
+    SOLID = True
+    RETURN = False
+
 class Wall(GameElement):
     IMAGE = "Wall"
     SOLID = True
     RETURN = False
-
-class Gem(GameElement):
-    IMAGE = "BlueGem"
-    SOLID = False
-    RETURN = False
-
-    def interact(self, player):
-        player.inventory.append(self)
-        GAME_BOARD.draw_msg("You just acquired a gem! You have %d item(s)!" %(len(player.inventory)))
-
-
-class Heart(GameElement):
-    IMAGE = "Heart"
-    SOLID = False
-    RETURN = False
-
-    # def interact(self, player):
-    #     player.inventory.append(self)
-    #     GAME_BOARD.draw_msg("You just acquired a heart! You have %d item(s)!" %(len(player.inventory)))
-
-    #     next_x = 2
-    #     next_y = 2
 
 class Campanile(GameElement):
     IMAGE = "Campanile"
@@ -150,18 +133,24 @@ class Yoshua(Character):
     IMAGE = "Yoshua"
     SOLID = True
     RETURN = False
+    DEFEATED = False
 
     def interact(self, player):
         global users_message
         GAME_BOARD.draw_msg("'God's going to burn up this universe, sun, moon, and stars, and fold it up and burn it up.' You've just met Yoshua! Answer his riddle to move past him. 'How many days until the end of the world?'")
+        
         if users_message == ['2']:
+            global yoshua
             GAME_BOARD.del_el(yoshua.x, yoshua.y)
             gold_key = Key()
             GAME_BOARD.register(gold_key)
             GAME_BOARD.set_el(4, 3, gold_key)
+            # GAME_BOARD.set_el(3, 3, yoshua2)
             GAME_BOARD.draw_msg("You got the answer! Here's a key to the Campanile. See you in Heaven!")
-        else:
-            GAME_BOARD.draw_msg("'It's going to happen, it's going to happen, it happened on May 21, five months ago' Hm. That didn't work. Guess again.")
+        # if yoshua2.DEFEATED:
+        #     GAME_BOARD.draw_msg("You already took my key. Go away. 2 days.")
+        # else:
+        #     GAME_BOARD.draw_msg("'It's going to happen, it's going to happen, it happened on May 21, five months ago' Hm. That didn't work. Guess again.")
 
 
 class Happy(Character):
@@ -175,9 +164,8 @@ class Happy(Character):
         if users_message == ['h','a','p','p','y']:
             GAME_BOARD.del_el(happy.x, happy.y)
             happy2 = Happy()
-            happy2.SOLID = False
             GAME_BOARD.register(happy2)
-            GAME_BOARD.set_el(2, 7, happy2)
+            GAME_BOARD.set_el(2, 6, happy2)
             GAME_BOARD.draw_msg("You got the answer! Come on through!")
 
 
@@ -247,23 +235,6 @@ def in_game_keyboard_handler():
             GAME_BOARD.del_el(PLAYER.x, PLAYER.y)
             GAME_BOARD.set_el(next_x, next_y, PLAYER)
 
-# def messaging_keyboard_handler():
-#     # GAME_BOARD.draw_msg("fill this in later")
-#     users_message = []
-#     if KEYBOARD[key.H]:
-#         users_message.append('h')
-#         GAME_BOARD.draw_msg(users_message)
-#     if KEYBOARD[key.DELETE]:
-#         users_message.pop()
-#         GAME_BOARD.draw_msg(users_message)
-    # in_game = True
-
-
-# def in_game_checker():
-#     if in_game:
-#         in_game_keyboard_handler()
-#     else:
-#         messaging_keyboard_handler()
 
 def initialize():
     """Put game initialization code here"""
@@ -272,7 +243,6 @@ def initialize():
     
     print in_game
     
-    # in_game_checker()
     in_game_keyboard_handler()
 
     # Initialize water
@@ -287,6 +257,19 @@ def initialize():
         water = Water()
         GAME_BOARD.register(water) 
         GAME_BOARD.set_el(pos[0],pos[1],water)
+
+    # Initialize tall trees
+    talltree_positions = [
+            (8,8),
+            (11,4),
+            (10,6),
+            (12,8)
+        ]
+
+    for pos in talltree_positions:
+        talltree = TallTree()
+        GAME_BOARD.register(talltree) 
+        GAME_BOARD.set_el(pos[0],pos[1],talltree)
 
     # Initialize walls
     wall_positions = [
@@ -338,6 +321,11 @@ def initialize():
     yoshua = Yoshua()
     GAME_BOARD.register(yoshua)
     GAME_BOARD.set_el(4, 3, yoshua)
+
+    global yoshua2
+    yoshua2 = Yoshua()
+    yoshua2.DEFEATED = True
+    GAME_BOARD.register(yoshua2)
 
     # Initialize Oski
     global oski
@@ -403,3 +391,25 @@ def initialize():
 #         GAME_BOARD.set_el(next_x, PLAYER.y, PLAYER)
 #     elif KEYBOARD[key.SPACE]:
 #         GAME_BOARD.erase_msg()
+
+# class Gem(GameElement):
+#     IMAGE = "BlueGem"
+#     SOLID = False
+#     RETURN = False
+
+#     def interact(self, player):
+#         player.inventory.append(self)
+#         GAME_BOARD.draw_msg("You just acquired a gem! You have %d item(s)!" %(len(player.inventory)))
+
+
+# class Heart(GameElement):
+#     IMAGE = "Heart"
+#     SOLID = False
+    # RETURN = False
+
+    # def interact(self, player):
+    #     player.inventory.append(self)
+    #     GAME_BOARD.draw_msg("You just acquired a heart! You have %d item(s)!" %(len(player.inventory)))
+
+    #     next_x = 2
+    #     next_y = 2
