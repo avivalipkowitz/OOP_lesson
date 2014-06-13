@@ -46,7 +46,9 @@ def setup_images():
             "Yoshua": "yoshua.png",
             "Oski": "oski.png",
             "Aviva": "Aviva.png",
-            "Katie": "katie.png"
+            "Katie": "katie.png",
+            "Water": "Water Block.png",
+            "StanfordTree": "StanfordTree.png"
             }
 
     for k,v in filenames.items():
@@ -227,7 +229,7 @@ def run():
     game_window.push_handlers(key_handler)
 
     try:
-        handler = game.keyboard_handler
+        handler = game.in_game_keyboard_handler
         def handler_wrapper(dt):
             handler()
         pyglet.clock.schedule_interval(handler_wrapper, 1/10.0)
